@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
     _tdlibWrapper = TdlibWrapper();
     await _tdlibWrapper.initClient();
 
-    _tdlibWrapper.updates.listen((update) {
+    _tdlibWrapper.updates.stream.listen((update) {
       if (update is TdApi.UpdateOption) {
         if (update.name == "version")
           setState(() =>

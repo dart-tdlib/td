@@ -1,10 +1,10 @@
+import 'dart:async';
 import "dart:convert";
 import "dart:ffi";
 import 'dart:isolate';
 
 import 'package:td/src/tdclient/storage_impl.dart';
 import "package:ffi/ffi.dart";
-import 'package:rxdart/rxdart.dart';
 import 'package:td/src/tdclient/bindings.dart';
 import 'package:td/td_api.dart';
 
@@ -60,7 +60,7 @@ class TdlibWrapper {
   Isolate _isolate;
   SendPort _sendPort;
   ReceivePort _receivePort;
-  BehaviorSubject updates = BehaviorSubject();
+  StreamController<TdObject> updates = StreamController<TdObject>();
 
   Future<void> initClient([bool closeClients = true]) async {
     if (closeClients) {
@@ -72,15 +72,19 @@ class TdlibWrapper {
     }
 
     _receivePort = ReceivePort();
+    Completer _completer = new Completer();
     _isolate = await Isolate.spawn(_clientIsolate, _receivePort.sendPort);
     // redirect all updates to BehaviorSubject so we can have multiple listeners
     _receivePort.listen((message) {
       if (message is Map && message.containsKey('port')) {
         _sendPort = message['port'];
         addClient(message['address']);
+        _completer.complete();
       } else
         updates.add(convertToObject(message));
     });
+
+    return _completer.future;
   }
 
   Future<TdObject> execute(TdFunction request) async {
