@@ -2,6 +2,7 @@ import "dart:convert";
 import "dart:ffi";
 import 'dart:isolate';
 
+import 'package:td/src/tdclient/storage_impl.dart';
 import "package:ffi/ffi.dart";
 import 'package:rxdart/rxdart.dart';
 import 'package:td/src/tdclient/bindings.dart';
@@ -20,10 +21,10 @@ Future<void> _receiveUpdates(Pointer client, SendPort port) async {
   Future(() => _receiveUpdates(client, port));
 }
 
-void _clientIsolate(SendPort port) {
+void _clientIsolate(SendPort port) async {
   var isolateReceivePort = ReceivePort();
   Pointer client = bindings.clientCreate();
-  port.send(isolateReceivePort.sendPort);
+  port.send({'port': isolateReceivePort.sendPort, 'address': client.address});
 
   isolateReceivePort.listen((message) async {
     if (message is Map) {
@@ -61,19 +62,25 @@ class TdlibWrapper {
   ReceivePort _receivePort;
   BehaviorSubject updates = BehaviorSubject();
 
-  Future<void> initClient() async {
+  Future<void> initClient([bool closeClients = true]) async {
+    if (closeClients) {
+      List<Pointer> _existingClients = await getExistingClients();
+      for (Pointer _clientPointer in _existingClients) {
+        bindings.clientDestroy(_clientPointer);
+      }
+      await setClients([]);
+    }
+
     _receivePort = ReceivePort();
     _isolate = await Isolate.spawn(_clientIsolate, _receivePort.sendPort);
     // redirect all updates to BehaviorSubject so we can have multiple listeners
     _receivePort.listen((message) {
-      if (message is SendPort)
-        updates.add(message);
-      else
+      if (message is Map && message.containsKey('port')) {
+        _sendPort = message['port'];
+        addClient(message['address']);
+      } else
         updates.add(convertToObject(message));
     });
-
-    // first update will be a port to which we can send requests and get the response w/o main stream
-    _sendPort = (await updates.first) as SendPort;
   }
 
   Future<TdObject> execute(TdFunction request) async {
