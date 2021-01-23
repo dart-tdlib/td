@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:td/td_api.dart' as TdApi;
-import 'package:td/td_client.dart';
+import 'package:td/td_service.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,7 +25,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _tdlibVersion = "Unknown";
-  TdlibWrapper _tdlibWrapper;
+  TelegramService _telegramService;
 
   @override
   void initState() {
@@ -34,10 +34,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _initClient() async {
-    _tdlibWrapper = TdlibWrapper();
-    await _tdlibWrapper.initClient();
-
-    _tdlibWrapper.updates.stream.listen((update) {
+    _telegramService = TelegramService();
+    await _telegramService.initClient();
+    _telegramService.events.stream.listen((update) {
       if (update is TdApi.UpdateOption) {
         if (update.name == "version")
           setState(() =>
@@ -57,7 +56,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    _tdlibWrapper.dispose();
+    _telegramService.dispose();
     super.dispose();
   }
 }

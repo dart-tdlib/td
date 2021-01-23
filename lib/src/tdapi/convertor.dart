@@ -1,8 +1,9 @@
 part of 'tdapi.dart';
 
-TdObject convertToObject(Map query) {
+TdObject convertToObject(String query) {
   if (query != null) {
-    final object = allObjects[query['@type']](query);
+    final newJson = json.decode(query);
+    final object = allObjects[newJson['@type']](newJson);
     return object;
   } else {
     return null;
