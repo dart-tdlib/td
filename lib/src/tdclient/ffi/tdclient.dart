@@ -5,27 +5,31 @@ import 'dart:isolate';
 
 import "package:ffi/ffi.dart";
 import 'package:flutter/services.dart';
-import 'package:td/bindings.dart';
+import 'package:td/src/tdclient/ffi/bindigs_impls/base.dart';
 import 'package:td/src/tdclient/ffi/bindings.dart';
 import 'package:td/td_api.dart';
 
-Future<void> _receiveUpdates(
-    BindingsImpl bindingsImpl, Pointer client, SendPort port) async {
+// TODO: Make this changable outside of Isolate
+// Or just keep it as it is so we allow to choose bindings only by library itself?
+// We can also pass to the Isolate names of ffi methods instead of typedefs
+// So we won't face any errors, but I don't like that way much
+TdJSONBindings jsonBindings = TdJSONBindings();
+BindingsImpl bindingsImpl = jsonBindings.bindings;
+
+Future<void> _receiveUpdates(Pointer client, SendPort port) async {
   final event = await Future(() => bindingsImpl.clientReceive(client, 1.0));
   if (event.address != 0) {
     final resString = Utf8.fromUtf8(event);
     port.send(resString);
   }
 
-  Future(() => _receiveUpdates(bindingsImpl, client, port));
+  Future(() => _receiveUpdates(client, port));
 }
 
 void _clientIsolate(SendPort port) async {
   var isolateReceivePort = ReceivePort();
-  Pointer client;
-  BindingsImpl bindingsImpl;
-
-  port.send({'port': isolateReceivePort.sendPort, 'address': client.address});
+  Pointer client = bindingsImpl.clientCreate();
+  port.send({'port': isolateReceivePort.sendPort});
 
   isolateReceivePort.listen((message) async {
     if (message is Map) {
@@ -34,13 +38,6 @@ void _clientIsolate(SendPort port) async {
         tmpSendPort = message['port'] as SendPort;
 
       switch (message['_requestType'] as String) {
-        case 'bindings':
-          bindingsImpl = message['bindingsImpl'];
-          print(bindingsImpl);
-          client = bindingsImpl.clientCreate();
-          tmpSendPort.send(true);
-          _receiveUpdates(bindingsImpl, client, port);
-          break;
         case 'execute':
           var tdlibRequest = message;
           tdlibRequest.remove('_requestType');
@@ -62,6 +59,8 @@ void _clientIsolate(SendPort port) async {
       }
     }
   });
+
+  _receiveUpdates(client, port);
 }
 
 class TdlibFFIWrapper {
@@ -70,26 +69,17 @@ class TdlibFFIWrapper {
   ReceivePort _receivePort;
   StreamController<TdObject> updates = StreamController<TdObject>();
 
-  Future<void> initClient([BindingsImpl bindingsImpl]) async {
-    BindingsImpl _bindingsImpl;
-    TdJSONBindings autoBindings = TdJSONBindings();
-
-    if (bindingsImpl != null)
-      _bindingsImpl = bindingsImpl;
-    else if (autoBindings.bindings == null)
+  Future<void> initClient() async {
+    if (bindingsImpl == null)
       throw PlatformException(
           code: "TDLib", message: "Platform is unsupported");
-    else
-      _bindingsImpl = autoBindings.bindings;
-
     _receivePort = ReceivePort();
     Completer _completer = new Completer();
     _isolate = await Isolate.spawn(_clientIsolate, _receivePort.sendPort);
     _receivePort.listen((message) {
-      print(message);
       if (message is Map && message.containsKey('port')) {
         _sendPort = message['port'];
-        _initClientBindings(_bindingsImpl, _completer);
+        _completer.complete();
       } else
         updates.add(convertToObject(message));
     });
@@ -104,7 +94,6 @@ class TdlibFFIWrapper {
     jsonRequest['port'] = tmpReceivePort.sendPort;
     jsonRequest['_requestType'] = 'execute';
     _sendPort.send(jsonRequest);
-
     return convertToObject(await tmpReceivePort.first);
   }
 
@@ -113,20 +102,6 @@ class TdlibFFIWrapper {
 
     jsonRequest['_requestType'] = 'send';
     _sendPort.send(jsonRequest);
-  }
-
-  void _initClientBindings(
-      BindingsImpl bindingsImpl, Completer completer) async {
-    var tmpReceivePort = ReceivePort();
-    _sendPort.send({
-      '_requestType': 'bindings',
-      'bindingsImpl': bindingsImpl,
-      'port': tmpReceivePort
-    });
-
-    if ((await tmpReceivePort.first) == true) {
-      completer.complete();
-    }
   }
 
   Future<void> dispose() async {

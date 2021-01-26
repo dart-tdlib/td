@@ -5,7 +5,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:td/bindings.dart';
 import 'package:td/src/tdclient/ffi/tdclient.dart';
 import 'package:td/src/tdclient/platform_channels/platform_channels.dart';
 import 'package:td/td_api.dart';
@@ -26,10 +25,10 @@ class TelegramService extends ChangeNotifier {
   Map results = <int, Completer>{};
   Map callbackResults = <int, Future<void>>{};
 
-  Future<void> initClient([Backend backend, BindingsImpl bindingsImpl]) async {
+  Future<void> initClient([Backend backend]) async {
     Backend _backend;
     if (backend == null) {
-      if (Platform.isAndroid)
+      if (!Platform.isAndroid)
         backend = Backend.PLATFORM_CHANNELS;
       else
         backend = Backend.FFI;
@@ -44,7 +43,7 @@ class TelegramService extends ChangeNotifier {
       _clientEvents = TdlibPlatformWrapper.clientEvents();
     } else {
       client = TdlibFFIWrapper();
-      client.initClient(bindingsImpl);
+      client.initClient();
       _clientEvents = client.updates.stream;
     }
 
