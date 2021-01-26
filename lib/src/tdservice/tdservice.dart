@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:td/bindings.dart';
 import 'package:td/src/tdclient/ffi/tdclient.dart';
 import 'package:td/src/tdclient/platform_channels/platform_channels.dart';
 import 'package:td/td_api.dart';
@@ -25,14 +26,17 @@ class TelegramService extends ChangeNotifier {
   Map results = <int, Completer>{};
   Map callbackResults = <int, Future<void>>{};
 
-  Future<void> initClient() async {
-    Backend backend;
-    if (Platform.isAndroid || Platform.isIOS)
-      backend = Backend.PLATFORM_CHANNELS;
-    else
-      backend = Backend.FFI;
+  Future<void> initClient([Backend backend, BindingsImpl bindingsImpl]) async {
+    Backend _backend;
+    if (backend == null) {
+      if (Platform.isAndroid)
+        backend = Backend.PLATFORM_CHANNELS;
+      else
+        backend = Backend.FFI;
+    } else
+      _backend = backend;
 
-    if (backend == Backend.PLATFORM_CHANNELS) {
+    if (_backend == Backend.PLATFORM_CHANNELS) {
       client = await TdlibPlatformWrapper.createClient();
       if (client == 0)
         throw PlatformException(
@@ -40,7 +44,7 @@ class TelegramService extends ChangeNotifier {
       _clientEvents = TdlibPlatformWrapper.clientEvents();
     } else {
       client = TdlibFFIWrapper();
-      client.initClient();
+      client.initClient(bindingsImpl);
       _clientEvents = client.updates.stream;
     }
 

@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('TdLib version: $_tdlibVersion'),
+        child: Text('TDLib version: $_tdlibVersion'),
       ),
     );
   }

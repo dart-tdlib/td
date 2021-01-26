@@ -440,7 +440,7 @@ class TlObjectArg {
       writeToJson =
           '.map(($itemName) => ${getWrite(itemName, subType, itemName: '${itemName}i', isList: true)}).toList()';
     } else if (!isList) {
-      writeToJson = ' == null ? null : this.${argName}.toJson()';
+      writeToJson = ' == null ? null : this.$argName.toJson()';
     } else {
       writeToJson = '.toJson()';
     }

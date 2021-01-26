@@ -5,3 +5,7 @@
 .pub/
 
 build/
+
+# Prebuilts
+example/ios/libtdjson.dylib
+android/src/main/jniLibs/*
