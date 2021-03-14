@@ -6,10 +6,14 @@ class GroupCallParticipant extends TdObject {
       {this.userId,
       this.source,
       this.isSpeaking,
-      this.canBeMuted,
-      this.canBeUnmuted,
-      this.isMuted,
+      this.canBeMutedForAllUsers,
+      this.canBeUnmutedForAllUsers,
+      this.canBeMutedForCurrentUser,
+      this.canBeUnmutedForCurrentUser,
+      this.isMutedForAllUsers,
+      this.isMutedForCurrentUser,
       this.canUnmuteSelf,
+      this.volumeLevel,
       this.order});
 
   /// [userId] Identifier of the user
@@ -21,17 +25,29 @@ class GroupCallParticipant extends TdObject {
   /// [isSpeaking] True, if the participant is speaking as set by setGroupCallParticipantIsSpeaking
   bool isSpeaking;
 
-  /// [canBeMuted] True, if the current user can mute the participant
-  bool canBeMuted;
+  /// [canBeMutedForAllUsers] True, if the current user can mute the participant for all other group call participants
+  bool canBeMutedForAllUsers;
 
-  /// [canBeUnmuted] True, if the current user can allow the participant to unmute themself or unmute the participant (only for self)
-  bool canBeUnmuted;
+  /// [canBeUnmutedForAllUsers] True, if the current user can allow the participant to unmute themself or unmute the participant (if the participant is the current user)
+  bool canBeUnmutedForAllUsers;
 
-  /// [isMuted] True, if the participant is muted
-  bool isMuted;
+  /// [canBeMutedForCurrentUser] True, if the current user can mute the participant only for self
+  bool canBeMutedForCurrentUser;
 
-  /// [canUnmuteSelf] True, if the participant can unmute themself
+  /// [canBeUnmutedForCurrentUser] True, if the current user can unmute the participant for self
+  bool canBeUnmutedForCurrentUser;
+
+  /// [isMutedForAllUsers] True, if the participant is muted for all users
+  bool isMutedForAllUsers;
+
+  /// [isMutedForCurrentUser] True, if the participant is muted for the current user
+  bool isMutedForCurrentUser;
+
+  /// [canUnmuteSelf] True, if the participant is muted for all users, but can unmute themself
   bool canUnmuteSelf;
+
+  /// [volumeLevel] Participant's volume level; 1-20000 in hundreds of percents
+  int volumeLevel;
 
   /// [order] User's order in the group call participant list. The bigger is order, the higher is user in the list. If order is 0, the user must be removed from the participant list
   int order;
@@ -41,10 +57,14 @@ class GroupCallParticipant extends TdObject {
     this.userId = json['user_id'];
     this.source = json['source'];
     this.isSpeaking = json['is_speaking'];
-    this.canBeMuted = json['can_be_muted'];
-    this.canBeUnmuted = json['can_be_unmuted'];
-    this.isMuted = json['is_muted'];
+    this.canBeMutedForAllUsers = json['can_be_muted_for_all_users'];
+    this.canBeUnmutedForAllUsers = json['can_be_unmuted_for_all_users'];
+    this.canBeMutedForCurrentUser = json['can_be_muted_for_current_user'];
+    this.canBeUnmutedForCurrentUser = json['can_be_unmuted_for_current_user'];
+    this.isMutedForAllUsers = json['is_muted_for_all_users'];
+    this.isMutedForCurrentUser = json['is_muted_for_current_user'];
     this.canUnmuteSelf = json['can_unmute_self'];
+    this.volumeLevel = json['volume_level'];
     this.order = int.tryParse(json['order'] ?? "");
   }
 
@@ -55,10 +75,14 @@ class GroupCallParticipant extends TdObject {
       "user_id": this.userId,
       "source": this.source,
       "is_speaking": this.isSpeaking,
-      "can_be_muted": this.canBeMuted,
-      "can_be_unmuted": this.canBeUnmuted,
-      "is_muted": this.isMuted,
+      "can_be_muted_for_all_users": this.canBeMutedForAllUsers,
+      "can_be_unmuted_for_all_users": this.canBeUnmutedForAllUsers,
+      "can_be_muted_for_current_user": this.canBeMutedForCurrentUser,
+      "can_be_unmuted_for_current_user": this.canBeUnmutedForCurrentUser,
+      "is_muted_for_all_users": this.isMutedForAllUsers,
+      "is_muted_for_current_user": this.isMutedForCurrentUser,
       "can_unmute_self": this.canUnmuteSelf,
+      "volume_level": this.volumeLevel,
       "order": this.order,
     };
   }

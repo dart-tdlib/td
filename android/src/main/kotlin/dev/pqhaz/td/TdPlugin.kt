@@ -48,7 +48,6 @@ class TdPlugin: FlutterPlugin, MethodCallHandler {
     eventsChannel = EventChannel(flutterPluginBinding.binaryMessenger, "channel/to/tdlib/receive")
     eventsChannel.setStreamHandler(object: EventChannel.StreamHandler {
       override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
-        Log.d("TdPlugin", "Listen called")
         if (clientThread != null) return
         clientThread = ClientEventsThread(clientId, events)
         clientThread?.start()
@@ -62,13 +61,10 @@ class TdPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    Log.d("TdPlugin", "Receiving method call -> " + call.method)
-
     when (call.method) {
       "clientCreate" -> {
         if (clientId.toInt() != 0) {
           // Should occur after hot restart
-          Log.d("TdPlugin", "Client exists, recreating")
           clientThread?.interrupt()
           clientThread?.join()
           clientThread = null

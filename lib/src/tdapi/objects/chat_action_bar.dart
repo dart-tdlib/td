@@ -7,6 +7,7 @@ class ChatActionBar extends TdObject {
   /// a ChatActionBar return type can be :
   /// * ChatActionBarReportSpam
   /// * ChatActionBarReportUnrelatedLocation
+  /// * ChatActionBarInviteMembers
   /// * ChatActionBarReportAddBlock
   /// * ChatActionBarAddContact
   /// * ChatActionBarSharePhoneNumber
@@ -16,6 +17,8 @@ class ChatActionBar extends TdObject {
         return ChatActionBarReportSpam.fromJson(json);
       case ChatActionBarReportUnrelatedLocation.CONSTRUCTOR:
         return ChatActionBarReportUnrelatedLocation.fromJson(json);
+      case ChatActionBarInviteMembers.CONSTRUCTOR:
+        return ChatActionBarInviteMembers.fromJson(json);
       case ChatActionBarReportAddBlock.CONSTRUCTOR:
         return ChatActionBarReportAddBlock.fromJson(json);
       case ChatActionBarAddContact.CONSTRUCTOR:
@@ -79,6 +82,26 @@ class ChatActionBarReportUnrelatedLocation extends ChatActionBar {
   }
 
   static const CONSTRUCTOR = 'chatActionBarReportUnrelatedLocation';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
+class ChatActionBarInviteMembers extends ChatActionBar {
+  /// The chat is a recently created group chat, to which new members can be invited
+  ChatActionBarInviteMembers();
+
+  /// Parse from a json
+  ChatActionBarInviteMembers.fromJson(Map<String, dynamic> json);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
+    };
+  }
+
+  static const CONSTRUCTOR = 'chatActionBarInviteMembers';
 
   @override
   String getConstructor() => CONSTRUCTOR;

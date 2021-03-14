@@ -12,7 +12,7 @@ class BasicGroupFullInfo extends TdObject {
   /// [photo] Chat photo; may be null
   ChatPhoto photo;
 
-  /// [description] Group description
+  /// [description] Group description. Updated only after the basic group is opened
   String description;
 
   /// [creatorUserId] User identifier of the creator of the group; 0 if unknown
@@ -21,8 +21,8 @@ class BasicGroupFullInfo extends TdObject {
   /// [members] Group members
   List<ChatMember> members;
 
-  /// [inviteLink] Invite link for this group; available only after it has been generated at least once and only for the group creator
-  String inviteLink;
+  /// [inviteLink] Primary invite link for this group; may be null. For chat administrators with can_invite_users right only. Updated only after the basic group is opened
+  ChatInviteLink inviteLink;
 
   /// callback sign
   dynamic extra;
@@ -35,7 +35,8 @@ class BasicGroupFullInfo extends TdObject {
     this.members = List<ChatMember>.from((json['members'] ?? [])
         .map((item) => ChatMember.fromJson(item ?? <String, dynamic>{}))
         .toList());
-    this.inviteLink = json['invite_link'];
+    this.inviteLink =
+        ChatInviteLink.fromJson(json['invite_link'] ?? <String, dynamic>{});
     this.extra = json['@extra'];
   }
 
@@ -47,7 +48,7 @@ class BasicGroupFullInfo extends TdObject {
       "description": this.description,
       "creator_user_id": this.creatorUserId,
       "members": this.members.map((i) => i.toJson()).toList(),
-      "invite_link": this.inviteLink,
+      "invite_link": this.inviteLink == null ? null : this.inviteLink.toJson(),
     };
   }
 

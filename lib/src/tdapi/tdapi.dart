@@ -65,6 +65,13 @@ part 'objects/chat_member.dart';
 part 'objects/chat_members.dart';
 part 'objects/chat_members_filter.dart';
 part 'objects/supergroup_members_filter.dart';
+part 'objects/chat_invite_link.dart';
+part 'objects/chat_invite_links.dart';
+part 'objects/chat_invite_link_count.dart';
+part 'objects/chat_invite_link_counts.dart';
+part 'objects/chat_invite_link_member.dart';
+part 'objects/chat_invite_link_members.dart';
+part 'objects/chat_invite_link_info.dart';
 part 'objects/basic_group.dart';
 part 'objects/basic_group_full_info.dart';
 part 'objects/supergroup.dart';
@@ -98,8 +105,6 @@ part 'objects/chat.dart';
 part 'objects/chats.dart';
 part 'objects/chat_nearby.dart';
 part 'objects/chats_nearby.dart';
-part 'objects/chat_invite_link.dart';
-part 'objects/chat_invite_link_info.dart';
 part 'objects/public_chat_type.dart';
 part 'objects/chat_action_bar.dart';
 part 'objects/keyboard_button_type.dart';
@@ -220,6 +225,7 @@ part 'objects/input_background.dart';
 part 'objects/hashtags.dart';
 part 'objects/can_transfer_ownership_result.dart';
 part 'objects/check_chat_username_result.dart';
+part 'objects/message_file_type.dart';
 part 'objects/push_message_content.dart';
 part 'objects/notification_type.dart';
 part 'objects/notification_group_type.dart';
@@ -355,10 +361,12 @@ part 'functions/get_groups_in_common.dart';
 part 'functions/get_chat_history.dart';
 part 'functions/get_message_thread_history.dart';
 part 'functions/delete_chat_history.dart';
+part 'functions/delete_chat.dart';
 part 'functions/search_chat_messages.dart';
 part 'functions/search_messages.dart';
 part 'functions/search_secret_messages.dart';
 part 'functions/search_call_messages.dart';
+part 'functions/delete_all_call_messages.dart';
 part 'functions/search_chat_recent_location_messages.dart';
 part 'functions/get_active_live_location_messages.dart';
 part 'functions/get_chat_message_by_date.dart';
@@ -376,7 +384,6 @@ part 'functions/send_bot_start_message.dart';
 part 'functions/send_inline_query_result_message.dart';
 part 'functions/forward_messages.dart';
 part 'functions/resend_messages.dart';
-part 'functions/send_chat_set_ttl_message.dart';
 part 'functions/send_chat_screenshot_taken_notification.dart';
 part 'functions/add_local_message.dart';
 part 'functions/delete_messages.dart';
@@ -424,6 +431,7 @@ part 'functions/open_chat.dart';
 part 'functions/close_chat.dart';
 part 'functions/view_messages.dart';
 part 'functions/open_message_content.dart';
+part 'functions/get_external_link.dart';
 part 'functions/read_all_chat_mentions.dart';
 part 'functions/create_private_chat.dart';
 part 'functions/create_basic_group_chat.dart';
@@ -444,6 +452,7 @@ part 'functions/get_recommended_chat_filters.dart';
 part 'functions/get_chat_filter_default_icon_name.dart';
 part 'functions/set_chat_title.dart';
 part 'functions/set_chat_photo.dart';
+part 'functions/set_chat_message_ttl_setting.dart';
 part 'functions/set_chat_permissions.dart';
 part 'functions/set_chat_draft_message.dart';
 part 'functions/set_chat_notification_settings.dart';
@@ -462,6 +471,7 @@ part 'functions/leave_chat.dart';
 part 'functions/add_chat_member.dart';
 part 'functions/add_chat_members.dart';
 part 'functions/set_chat_member_status.dart';
+part 'functions/ban_chat_member.dart';
 part 'functions/can_transfer_ownership.dart';
 part 'functions/transfer_chat_ownership.dart';
 part 'functions/get_chat_member.dart';
@@ -484,7 +494,19 @@ part 'functions/set_file_generation_progress.dart';
 part 'functions/finish_file_generation.dart';
 part 'functions/read_file_part.dart';
 part 'functions/delete_file.dart';
-part 'functions/generate_chat_invite_link.dart';
+part 'functions/get_message_file_type.dart';
+part 'functions/get_message_import_confirmation_text.dart';
+part 'functions/import_messages.dart';
+part 'functions/replace_primary_chat_invite_link.dart';
+part 'functions/create_chat_invite_link.dart';
+part 'functions/edit_chat_invite_link.dart';
+part 'functions/get_chat_invite_link.dart';
+part 'functions/get_chat_invite_link_counts.dart';
+part 'functions/get_chat_invite_links.dart';
+part 'functions/get_chat_invite_link_members.dart';
+part 'functions/revoke_chat_invite_link.dart';
+part 'functions/delete_revoked_chat_invite_link.dart';
+part 'functions/delete_all_revoked_chat_invite_links.dart';
 part 'functions/check_chat_invite_link.dart';
 part 'functions/join_chat_by_invite_link.dart';
 part 'functions/create_call.dart';
@@ -500,6 +522,7 @@ part 'functions/toggle_group_call_mute_new_participants.dart';
 part 'functions/invite_group_call_participants.dart';
 part 'functions/set_group_call_participant_is_speaking.dart';
 part 'functions/toggle_group_call_participant_is_muted.dart';
+part 'functions/set_group_call_participant_volume_level.dart';
 part 'functions/load_group_call_participants.dart';
 part 'functions/leave_group_call.dart';
 part 'functions/discard_group_call.dart';
@@ -567,9 +590,9 @@ part 'functions/set_supergroup_username.dart';
 part 'functions/set_supergroup_sticker_set.dart';
 part 'functions/toggle_supergroup_sign_messages.dart';
 part 'functions/toggle_supergroup_is_all_history_available.dart';
+part 'functions/toggle_supergroup_is_broadcast_group.dart';
 part 'functions/report_supergroup_spam.dart';
 part 'functions/get_supergroup_members.dart';
-part 'functions/delete_supergroup.dart';
 part 'functions/close_secret_chat.dart';
 part 'functions/get_chat_event_log.dart';
 part 'functions/get_payment_form.dart';
@@ -608,6 +631,7 @@ part 'functions/get_account_ttl.dart';
 part 'functions/delete_account.dart';
 part 'functions/remove_chat_action_bar.dart';
 part 'functions/report_chat.dart';
+part 'functions/report_chat_photo.dart';
 part 'functions/get_chat_statistics_url.dart';
 part 'functions/get_chat_statistics.dart';
 part 'functions/get_message_statistics.dart';
@@ -830,6 +854,13 @@ final Map<String, TdObject Function(Map<String, dynamic>)> allObjects = {
   'supergroupMembersFilterMention': (d) =>
       SupergroupMembersFilterMention.fromJson(d),
   'supergroupMembersFilterBots': (d) => SupergroupMembersFilterBots.fromJson(d),
+  'chatInviteLink': (d) => ChatInviteLink.fromJson(d),
+  'chatInviteLinks': (d) => ChatInviteLinks.fromJson(d),
+  'chatInviteLinkCount': (d) => ChatInviteLinkCount.fromJson(d),
+  'chatInviteLinkCounts': (d) => ChatInviteLinkCounts.fromJson(d),
+  'chatInviteLinkMember': (d) => ChatInviteLinkMember.fromJson(d),
+  'chatInviteLinkMembers': (d) => ChatInviteLinkMembers.fromJson(d),
+  'chatInviteLinkInfo': (d) => ChatInviteLinkInfo.fromJson(d),
   'basicGroup': (d) => BasicGroup.fromJson(d),
   'basicGroupFullInfo': (d) => BasicGroupFullInfo.fromJson(d),
   'supergroup': (d) => Supergroup.fromJson(d),
@@ -849,6 +880,8 @@ final Map<String, TdObject Function(Map<String, dynamic>)> allObjects = {
   'messageForwardOriginHiddenUser': (d) =>
       MessageForwardOriginHiddenUser.fromJson(d),
   'messageForwardOriginChannel': (d) => MessageForwardOriginChannel.fromJson(d),
+  'messageForwardOriginMessageImport': (d) =>
+      MessageForwardOriginMessageImport.fromJson(d),
   'messageForwardInfo': (d) => MessageForwardInfo.fromJson(d),
   'messageReplyInfo': (d) => MessageReplyInfo.fromJson(d),
   'messageInteractionInfo': (d) => MessageInteractionInfo.fromJson(d),
@@ -891,8 +924,6 @@ final Map<String, TdObject Function(Map<String, dynamic>)> allObjects = {
   'chats': (d) => Chats.fromJson(d),
   'chatNearby': (d) => ChatNearby.fromJson(d),
   'chatsNearby': (d) => ChatsNearby.fromJson(d),
-  'chatInviteLink': (d) => ChatInviteLink.fromJson(d),
-  'chatInviteLinkInfo': (d) => ChatInviteLinkInfo.fromJson(d),
   'publicChatType': (d) => PublicChatType.fromJson(d),
   'publicChatTypeHasUsername': (d) => PublicChatTypeHasUsername.fromJson(d),
   'publicChatTypeIsLocationBased': (d) =>
@@ -901,6 +932,7 @@ final Map<String, TdObject Function(Map<String, dynamic>)> allObjects = {
   'chatActionBarReportSpam': (d) => ChatActionBarReportSpam.fromJson(d),
   'chatActionBarReportUnrelatedLocation': (d) =>
       ChatActionBarReportUnrelatedLocation.fromJson(d),
+  'chatActionBarInviteMembers': (d) => ChatActionBarInviteMembers.fromJson(d),
   'chatActionBarReportAddBlock': (d) => ChatActionBarReportAddBlock.fromJson(d),
   'chatActionBarAddContact': (d) => ChatActionBarAddContact.fromJson(d),
   'chatActionBarSharePhoneNumber': (d) =>
@@ -1021,8 +1053,8 @@ final Map<String, TdObject Function(Map<String, dynamic>)> allObjects = {
   'inputCredentials': (d) => InputCredentials.fromJson(d),
   'inputCredentialsSaved': (d) => InputCredentialsSaved.fromJson(d),
   'inputCredentialsNew': (d) => InputCredentialsNew.fromJson(d),
-  'inputCredentialsAndroidPay': (d) => InputCredentialsAndroidPay.fromJson(d),
   'inputCredentialsApplePay': (d) => InputCredentialsApplePay.fromJson(d),
+  'inputCredentialsGooglePay': (d) => InputCredentialsGooglePay.fromJson(d),
   'paymentsProviderStripe': (d) => PaymentsProviderStripe.fromJson(d),
   'paymentForm': (d) => PaymentForm.fromJson(d),
   'validatedOrderInfo': (d) => ValidatedOrderInfo.fromJson(d),
@@ -1406,6 +1438,8 @@ final Map<String, TdObject Function(Map<String, dynamic>)> allObjects = {
   'chatEventMessagePinned': (d) => ChatEventMessagePinned.fromJson(d),
   'chatEventMessageUnpinned': (d) => ChatEventMessageUnpinned.fromJson(d),
   'chatEventMemberJoined': (d) => ChatEventMemberJoined.fromJson(d),
+  'chatEventMemberJoinedByInviteLink': (d) =>
+      ChatEventMemberJoinedByInviteLink.fromJson(d),
   'chatEventMemberLeft': (d) => ChatEventMemberLeft.fromJson(d),
   'chatEventMemberInvited': (d) => ChatEventMemberInvited.fromJson(d),
   'chatEventMemberPromoted': (d) => ChatEventMemberPromoted.fromJson(d),
@@ -1419,16 +1453,23 @@ final Map<String, TdObject Function(Map<String, dynamic>)> allObjects = {
   'chatEventLinkedChatChanged': (d) => ChatEventLinkedChatChanged.fromJson(d),
   'chatEventSlowModeDelayChanged': (d) =>
       ChatEventSlowModeDelayChanged.fromJson(d),
+  'chatEventMessageTtlSettingChanged': (d) =>
+      ChatEventMessageTtlSettingChanged.fromJson(d),
   'chatEventSignMessagesToggled': (d) =>
       ChatEventSignMessagesToggled.fromJson(d),
   'chatEventStickerSetChanged': (d) => ChatEventStickerSetChanged.fromJson(d),
   'chatEventLocationChanged': (d) => ChatEventLocationChanged.fromJson(d),
   'chatEventIsAllHistoryAvailableToggled': (d) =>
       ChatEventIsAllHistoryAvailableToggled.fromJson(d),
+  'chatEventInviteLinkEdited': (d) => ChatEventInviteLinkEdited.fromJson(d),
+  'chatEventInviteLinkRevoked': (d) => ChatEventInviteLinkRevoked.fromJson(d),
+  'chatEventInviteLinkDeleted': (d) => ChatEventInviteLinkDeleted.fromJson(d),
   'chatEventVoiceChatCreated': (d) => ChatEventVoiceChatCreated.fromJson(d),
   'chatEventVoiceChatDiscarded': (d) => ChatEventVoiceChatDiscarded.fromJson(d),
   'chatEventVoiceChatParticipantIsMutedToggled': (d) =>
       ChatEventVoiceChatParticipantIsMutedToggled.fromJson(d),
+  'chatEventVoiceChatParticipantVolumeLevelChanged': (d) =>
+      ChatEventVoiceChatParticipantVolumeLevelChanged.fromJson(d),
   'chatEventVoiceChatMuteNewParticipantsToggled': (d) =>
       ChatEventVoiceChatMuteNewParticipantsToggled.fromJson(d),
   'chatEvent': (d) => ChatEvent.fromJson(d),
@@ -1492,6 +1533,10 @@ final Map<String, TdObject Function(Map<String, dynamic>)> allObjects = {
       CheckChatUsernameResultPublicChatsTooMuch.fromJson(d),
   'checkChatUsernameResultPublicGroupsUnavailable': (d) =>
       CheckChatUsernameResultPublicGroupsUnavailable.fromJson(d),
+  'messageFileType': (d) => MessageFileType.fromJson(d),
+  'messageFileTypePrivate': (d) => MessageFileTypePrivate.fromJson(d),
+  'messageFileTypeGroup': (d) => MessageFileTypeGroup.fromJson(d),
+  'messageFileTypeUnknown': (d) => MessageFileTypeUnknown.fromJson(d),
   'pushMessageContent': (d) => PushMessageContent.fromJson(d),
   'pushMessageContentHidden': (d) => PushMessageContentHidden.fromJson(d),
   'pushMessageContentAnimation': (d) => PushMessageContentAnimation.fromJson(d),
@@ -1607,6 +1652,7 @@ final Map<String, TdObject Function(Map<String, dynamic>)> allObjects = {
   'chatReportReasonCopyright': (d) => ChatReportReasonCopyright.fromJson(d),
   'chatReportReasonUnrelatedLocation': (d) =>
       ChatReportReasonUnrelatedLocation.fromJson(d),
+  'chatReportReasonFake': (d) => ChatReportReasonFake.fromJson(d),
   'chatReportReasonCustom': (d) => ChatReportReasonCustom.fromJson(d),
   'messageLink': (d) => MessageLink.fromJson(d),
   'messageLinkInfo': (d) => MessageLinkInfo.fromJson(d),
@@ -1673,6 +1719,9 @@ final Map<String, TdObject Function(Map<String, dynamic>)> allObjects = {
       SuggestedActionEnableArchiveAndMuteNewChats.fromJson(d),
   'suggestedActionCheckPhoneNumber': (d) =>
       SuggestedActionCheckPhoneNumber.fromJson(d),
+  'suggestedActionSeeTicksHint': (d) => SuggestedActionSeeTicksHint.fromJson(d),
+  'suggestedActionConvertToBroadcastGroup': (d) =>
+      SuggestedActionConvertToBroadcastGroup.fromJson(d),
   'count': (d) => Count.fromJson(d),
   'text': (d) => Text.fromJson(d),
   'seconds': (d) => Seconds.fromJson(d),
@@ -1748,6 +1797,7 @@ final Map<String, TdObject Function(Map<String, dynamic>)> allObjects = {
       UpdateChatNotificationSettings.fromJson(d),
   'updateScopeNotificationSettings': (d) =>
       UpdateScopeNotificationSettings.fromJson(d),
+  'updateChatMessageTtlSetting': (d) => UpdateChatMessageTtlSetting.fromJson(d),
   'updateChatActionBar': (d) => UpdateChatActionBar.fromJson(d),
   'updateChatReplyMarkup': (d) => UpdateChatReplyMarkup.fromJson(d),
   'updateChatDraftMessage': (d) => UpdateChatDraftMessage.fromJson(d),
@@ -1807,6 +1857,7 @@ final Map<String, TdObject Function(Map<String, dynamic>)> allObjects = {
   'updateNewCustomQuery': (d) => UpdateNewCustomQuery.fromJson(d),
   'updatePoll': (d) => UpdatePoll.fromJson(d),
   'updatePollAnswer': (d) => UpdatePollAnswer.fromJson(d),
+  'updateChatMember': (d) => UpdateChatMember.fromJson(d),
   'updates': (d) => Updates.fromJson(d),
   'logStream': (d) => LogStream.fromJson(d),
   'logStreamDefault': (d) => LogStreamDefault.fromJson(d),

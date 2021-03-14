@@ -62,7 +62,7 @@ class PollTypeQuiz extends PollType {
   /// [correctOptionId] 0-based identifier of the correct answer option; -1 for a yet unanswered poll
   int correctOptionId;
 
-  /// [explanation] Text that is shown when the user chooses an incorrect answer or taps on the lamp icon, 0-200 characters with at most 2 line feeds; empty for a yet unanswered poll
+  /// [explanation] Text that is shown when the user chooses an incorrect answer or taps on the lamp icon; 0-200 characters with at most 2 line feeds; empty for a yet unanswered poll
   FormattedText explanation;
 
   /// Parse from a json

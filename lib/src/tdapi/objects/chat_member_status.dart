@@ -82,6 +82,7 @@ class ChatMemberStatusAdministrator extends ChatMemberStatus {
   ChatMemberStatusAdministrator(
       {this.customTitle,
       this.canBeEdited,
+      this.canManageChat,
       this.canChangeInfo,
       this.canPostMessages,
       this.canEditMessages,
@@ -98,6 +99,9 @@ class ChatMemberStatusAdministrator extends ChatMemberStatus {
 
   /// [canBeEdited] True, if the current user can edit the administrator privileges for the called user
   bool canBeEdited;
+
+  /// [canManageChat] True, if the administrator can get chat event log, get chat statistics, get message statistics in channels, get channel members, see anonymous administrators in supergoups and ignore slow mode. Implied by any other privilege; applicable to supergroups and channels only
+  bool canManageChat;
 
   /// [canChangeInfo] True, if the administrator can change the chat title, photo, and other settings
   bool canChangeInfo;
@@ -117,13 +121,13 @@ class ChatMemberStatusAdministrator extends ChatMemberStatus {
   /// [canRestrictMembers] True, if the administrator can restrict, ban, or unban chat members
   bool canRestrictMembers;
 
-  /// [canPinMessages] True, if the administrator can pin messages; applicable to groups only
+  /// [canPinMessages] True, if the administrator can pin messages; applicable to basic groups and supergroups only
   bool canPinMessages;
 
   /// [canPromoteMembers] True, if the administrator can add new administrators with a subset of their own privileges or demote administrators that were directly or indirectly promoted by them
   bool canPromoteMembers;
 
-  /// [canManageVoiceChats] True, if the administrator can manage voice chats; applicable to groups only
+  /// [canManageVoiceChats] True, if the administrator can manage voice chats; applicable to basic groups and supergroups only
   bool canManageVoiceChats;
 
   /// [isAnonymous] True, if the administrator isn't shown in the chat member list and sends messages anonymously; applicable to supergroups only
@@ -133,6 +137,7 @@ class ChatMemberStatusAdministrator extends ChatMemberStatus {
   ChatMemberStatusAdministrator.fromJson(Map<String, dynamic> json) {
     this.customTitle = json['custom_title'];
     this.canBeEdited = json['can_be_edited'];
+    this.canManageChat = json['can_manage_chat'];
     this.canChangeInfo = json['can_change_info'];
     this.canPostMessages = json['can_post_messages'];
     this.canEditMessages = json['can_edit_messages'];
@@ -151,6 +156,7 @@ class ChatMemberStatusAdministrator extends ChatMemberStatus {
       "@type": CONSTRUCTOR,
       "custom_title": this.customTitle,
       "can_be_edited": this.canBeEdited,
+      "can_manage_chat": this.canManageChat,
       "can_change_info": this.canChangeInfo,
       "can_post_messages": this.canPostMessages,
       "can_edit_messages": this.canEditMessages,
@@ -253,7 +259,7 @@ class ChatMemberStatusBanned extends ChatMemberStatus {
   /// The user was banned (and hence is not a member of the chat). Implies the user can't return to the chat or view messages
   ChatMemberStatusBanned({this.bannedUntilDate});
 
-  /// [bannedUntilDate] Point in time (Unix timestamp) when the user will be unbanned; 0 if never. If the user is banned for more than 366 days or for less than 30 seconds from the current time, the user is considered to be banned forever
+  /// [bannedUntilDate] Point in time (Unix timestamp) when the user will be unbanned; 0 if never. If the user is banned for more than 366 days or for less than 30 seconds from the current time, the user is considered to be banned forever. Always 0 in basic groups
   int bannedUntilDate;
 
   /// Parse from a json

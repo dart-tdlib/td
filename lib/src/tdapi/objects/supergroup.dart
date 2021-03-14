@@ -13,9 +13,11 @@ class Supergroup extends TdObject {
       this.signMessages,
       this.isSlowModeEnabled,
       this.isChannel,
+      this.isBroadcastGroup,
       this.isVerified,
       this.restrictionReason,
-      this.isScam});
+      this.isScam,
+      this.isFake});
 
   /// [id] Supergroup or channel identifier
   int id;
@@ -47,14 +49,20 @@ class Supergroup extends TdObject {
   /// [isChannel] True, if the supergroup is a channel
   bool isChannel;
 
+  /// [isBroadcastGroup] True, if the supergroup is a broadcast group, i.e. only administrators can send messages and there is no limit on number of members
+  bool isBroadcastGroup;
+
   /// [isVerified] True, if the supergroup or channel is verified
   bool isVerified;
 
   /// [restrictionReason] If non-empty, contains a human-readable description of the reason why access to this supergroup or channel must be restricted
   String restrictionReason;
 
-  /// [isScam] True, if many users reported this supergroup as a scam
+  /// [isScam] True, if many users reported this supergroup or channel as a scam
   bool isScam;
+
+  /// [isFake] True, if many users reported this supergroup or channel as a fake account
+  bool isFake;
 
   /// callback sign
   dynamic extra;
@@ -72,9 +80,11 @@ class Supergroup extends TdObject {
     this.signMessages = json['sign_messages'];
     this.isSlowModeEnabled = json['is_slow_mode_enabled'];
     this.isChannel = json['is_channel'];
+    this.isBroadcastGroup = json['is_broadcast_group'];
     this.isVerified = json['is_verified'];
     this.restrictionReason = json['restriction_reason'];
     this.isScam = json['is_scam'];
+    this.isFake = json['is_fake'];
     this.extra = json['@extra'];
   }
 
@@ -92,9 +102,11 @@ class Supergroup extends TdObject {
       "sign_messages": this.signMessages,
       "is_slow_mode_enabled": this.isSlowModeEnabled,
       "is_channel": this.isChannel,
+      "is_broadcast_group": this.isBroadcastGroup,
       "is_verified": this.isVerified,
       "restriction_reason": this.restrictionReason,
       "is_scam": this.isScam,
+      "is_fake": this.isFake,
     };
   }
 

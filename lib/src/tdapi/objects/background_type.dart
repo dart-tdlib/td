@@ -70,7 +70,7 @@ class BackgroundTypePattern extends BackgroundType {
   /// [fill] Description of the background fill
   BackgroundFill fill;
 
-  /// [intensity] Intensity of the pattern when it is shown above the filled background, 0-100
+  /// [intensity] Intensity of the pattern when it is shown above the filled background; 0-100
   int intensity;
 
   /// [isMoving] True, if the background needs to be slightly moved when device is tilted

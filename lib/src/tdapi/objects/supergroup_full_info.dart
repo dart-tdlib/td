@@ -75,8 +75,8 @@ class SupergroupFullInfo extends TdObject {
   /// [location] Location to which the supergroup is connected; may be null
   ChatLocation location;
 
-  /// [inviteLink] Invite link for this chat
-  String inviteLink;
+  /// [inviteLink] Primary invite link for this chat; may be null. For chat administrators with can_invite_users right only
+  ChatInviteLink inviteLink;
 
   /// [upgradedFromBasicGroupId] Identifier of the basic group from which supergroup was upgraded; 0 if none
   int upgradedFromBasicGroupId;
@@ -107,7 +107,8 @@ class SupergroupFullInfo extends TdObject {
     this.stickerSetId = int.tryParse(json['sticker_set_id'] ?? "");
     this.location =
         ChatLocation.fromJson(json['location'] ?? <String, dynamic>{});
-    this.inviteLink = json['invite_link'];
+    this.inviteLink =
+        ChatInviteLink.fromJson(json['invite_link'] ?? <String, dynamic>{});
     this.upgradedFromBasicGroupId = json['upgraded_from_basic_group_id'];
     this.upgradedFromMaxMessageId = json['upgraded_from_max_message_id'];
     this.extra = json['@extra'];
@@ -134,7 +135,7 @@ class SupergroupFullInfo extends TdObject {
       "is_all_history_available": this.isAllHistoryAvailable,
       "sticker_set_id": this.stickerSetId,
       "location": this.location == null ? null : this.location.toJson(),
-      "invite_link": this.inviteLink,
+      "invite_link": this.inviteLink == null ? null : this.inviteLink.toJson(),
       "upgraded_from_basic_group_id": this.upgradedFromBasicGroupId,
       "upgraded_from_max_message_id": this.upgradedFromMaxMessageId,
     };

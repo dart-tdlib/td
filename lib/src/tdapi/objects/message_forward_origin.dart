@@ -9,6 +9,7 @@ class MessageForwardOrigin extends TdObject {
   /// * MessageForwardOriginChat
   /// * MessageForwardOriginHiddenUser
   /// * MessageForwardOriginChannel
+  /// * MessageForwardOriginMessageImport
   factory MessageForwardOrigin.fromJson(Map<String, dynamic> json) {
     switch (json["@type"]) {
       case MessageForwardOriginUser.CONSTRUCTOR:
@@ -19,6 +20,8 @@ class MessageForwardOrigin extends TdObject {
         return MessageForwardOriginHiddenUser.fromJson(json);
       case MessageForwardOriginChannel.CONSTRUCTOR:
         return MessageForwardOriginChannel.fromJson(json);
+      case MessageForwardOriginMessageImport.CONSTRUCTOR:
+        return MessageForwardOriginMessageImport.fromJson(json);
       default:
         return null;
     }
@@ -150,6 +153,32 @@ class MessageForwardOriginChannel extends MessageForwardOrigin {
   }
 
   static const CONSTRUCTOR = 'messageForwardOriginChannel';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
+class MessageForwardOriginMessageImport extends MessageForwardOrigin {
+  /// The message was imported from an exported message history
+  MessageForwardOriginMessageImport({this.senderName});
+
+  /// [senderName] Name of the sender
+  String senderName;
+
+  /// Parse from a json
+  MessageForwardOriginMessageImport.fromJson(Map<String, dynamic> json) {
+    this.senderName = json['sender_name'];
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
+      "sender_name": this.senderName,
+    };
+  }
+
+  static const CONSTRUCTOR = 'messageForwardOriginMessageImport';
 
   @override
   String getConstructor() => CONSTRUCTOR;

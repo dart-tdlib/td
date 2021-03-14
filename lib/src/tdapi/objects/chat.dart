@@ -22,6 +22,7 @@ class Chat extends TdObject {
       this.lastReadOutboxMessageId,
       this.unreadMentionCount,
       this.notificationSettings,
+      this.messageTtlSetting,
       this.actionBar,
       this.voiceChatGroupCallId,
       this.isVoiceChatEmpty,
@@ -65,7 +66,7 @@ class Chat extends TdObject {
   /// [canBeDeletedForAllUsers] True, if the chat messages can be deleted for all users
   bool canBeDeletedForAllUsers;
 
-  /// [canBeReported] True, if the chat can be reported to Telegram moderators through reportChat
+  /// [canBeReported] True, if the chat can be reported to Telegram moderators through reportChat or reportChatPhoto
   bool canBeReported;
 
   /// [defaultDisableNotification] Default value of the disable_notification parameter, used when a message is sent to the chat
@@ -85,6 +86,9 @@ class Chat extends TdObject {
 
   /// [notificationSettings] Notification settings for this chat
   ChatNotificationSettings notificationSettings;
+
+  /// [messageTtlSetting] Current message Time To Live setting (self-destruct timer) for the chat; 0 if not defined. TTL is counted from the time message or its content is viewed in secret chats and from the send date in other chats
+  int messageTtlSetting;
 
   /// [actionBar] Describes actions which should be possible to do through a chat action bar; may be null
   ChatActionBar actionBar;
@@ -133,6 +137,7 @@ class Chat extends TdObject {
     this.unreadMentionCount = json['unread_mention_count'];
     this.notificationSettings = ChatNotificationSettings.fromJson(
         json['notification_settings'] ?? <String, dynamic>{});
+    this.messageTtlSetting = json['message_ttl_setting'];
     this.actionBar =
         ChatActionBar.fromJson(json['action_bar'] ?? <String, dynamic>{});
     this.voiceChatGroupCallId = json['voice_chat_group_call_id'];
@@ -171,6 +176,7 @@ class Chat extends TdObject {
       "notification_settings": this.notificationSettings == null
           ? null
           : this.notificationSettings.toJson(),
+      "message_ttl_setting": this.messageTtlSetting,
       "action_bar": this.actionBar == null ? null : this.actionBar.toJson(),
       "voice_chat_group_call_id": this.voiceChatGroupCallId,
       "is_voice_chat_empty": this.isVoiceChatEmpty,

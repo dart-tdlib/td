@@ -4,7 +4,7 @@ class AddLogMessage extends TdFunction {
   /// Adds a message to TDLib internal log. Can be called synchronously
   AddLogMessage({this.verbosityLevel, this.text});
 
-  /// [verbosityLevel] The minimum verbosity level needed for the message to be logged, 0-1023
+  /// [verbosityLevel] The minimum verbosity level needed for the message to be logged; 0-1023
   int verbosityLevel;
 
   /// [text] Text of a message to log

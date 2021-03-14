@@ -11,6 +11,7 @@ class ChatEventAction extends TdObject {
   /// * ChatEventMessagePinned
   /// * ChatEventMessageUnpinned
   /// * ChatEventMemberJoined
+  /// * ChatEventMemberJoinedByInviteLink
   /// * ChatEventMemberLeft
   /// * ChatEventMemberInvited
   /// * ChatEventMemberPromoted
@@ -23,13 +24,18 @@ class ChatEventAction extends TdObject {
   /// * ChatEventInvitesToggled
   /// * ChatEventLinkedChatChanged
   /// * ChatEventSlowModeDelayChanged
+  /// * ChatEventMessageTtlSettingChanged
   /// * ChatEventSignMessagesToggled
   /// * ChatEventStickerSetChanged
   /// * ChatEventLocationChanged
   /// * ChatEventIsAllHistoryAvailableToggled
+  /// * ChatEventInviteLinkEdited
+  /// * ChatEventInviteLinkRevoked
+  /// * ChatEventInviteLinkDeleted
   /// * ChatEventVoiceChatCreated
   /// * ChatEventVoiceChatDiscarded
   /// * ChatEventVoiceChatParticipantIsMutedToggled
+  /// * ChatEventVoiceChatParticipantVolumeLevelChanged
   /// * ChatEventVoiceChatMuteNewParticipantsToggled
   factory ChatEventAction.fromJson(Map<String, dynamic> json) {
     switch (json["@type"]) {
@@ -45,6 +51,8 @@ class ChatEventAction extends TdObject {
         return ChatEventMessageUnpinned.fromJson(json);
       case ChatEventMemberJoined.CONSTRUCTOR:
         return ChatEventMemberJoined.fromJson(json);
+      case ChatEventMemberJoinedByInviteLink.CONSTRUCTOR:
+        return ChatEventMemberJoinedByInviteLink.fromJson(json);
       case ChatEventMemberLeft.CONSTRUCTOR:
         return ChatEventMemberLeft.fromJson(json);
       case ChatEventMemberInvited.CONSTRUCTOR:
@@ -69,6 +77,8 @@ class ChatEventAction extends TdObject {
         return ChatEventLinkedChatChanged.fromJson(json);
       case ChatEventSlowModeDelayChanged.CONSTRUCTOR:
         return ChatEventSlowModeDelayChanged.fromJson(json);
+      case ChatEventMessageTtlSettingChanged.CONSTRUCTOR:
+        return ChatEventMessageTtlSettingChanged.fromJson(json);
       case ChatEventSignMessagesToggled.CONSTRUCTOR:
         return ChatEventSignMessagesToggled.fromJson(json);
       case ChatEventStickerSetChanged.CONSTRUCTOR:
@@ -77,12 +87,20 @@ class ChatEventAction extends TdObject {
         return ChatEventLocationChanged.fromJson(json);
       case ChatEventIsAllHistoryAvailableToggled.CONSTRUCTOR:
         return ChatEventIsAllHistoryAvailableToggled.fromJson(json);
+      case ChatEventInviteLinkEdited.CONSTRUCTOR:
+        return ChatEventInviteLinkEdited.fromJson(json);
+      case ChatEventInviteLinkRevoked.CONSTRUCTOR:
+        return ChatEventInviteLinkRevoked.fromJson(json);
+      case ChatEventInviteLinkDeleted.CONSTRUCTOR:
+        return ChatEventInviteLinkDeleted.fromJson(json);
       case ChatEventVoiceChatCreated.CONSTRUCTOR:
         return ChatEventVoiceChatCreated.fromJson(json);
       case ChatEventVoiceChatDiscarded.CONSTRUCTOR:
         return ChatEventVoiceChatDiscarded.fromJson(json);
       case ChatEventVoiceChatParticipantIsMutedToggled.CONSTRUCTOR:
         return ChatEventVoiceChatParticipantIsMutedToggled.fromJson(json);
+      case ChatEventVoiceChatParticipantVolumeLevelChanged.CONSTRUCTOR:
+        return ChatEventVoiceChatParticipantVolumeLevelChanged.fromJson(json);
       case ChatEventVoiceChatMuteNewParticipantsToggled.CONSTRUCTOR:
         return ChatEventVoiceChatMuteNewParticipantsToggled.fromJson(json);
       default:
@@ -253,6 +271,33 @@ class ChatEventMemberJoined extends ChatEventAction {
   }
 
   static const CONSTRUCTOR = 'chatEventMemberJoined';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
+class ChatEventMemberJoinedByInviteLink extends ChatEventAction {
+  /// A new member joined the chat by an invite link
+  ChatEventMemberJoinedByInviteLink({this.inviteLink});
+
+  /// [inviteLink] Invite link used to join the chat
+  ChatInviteLink inviteLink;
+
+  /// Parse from a json
+  ChatEventMemberJoinedByInviteLink.fromJson(Map<String, dynamic> json) {
+    this.inviteLink =
+        ChatInviteLink.fromJson(json['invite_link'] ?? <String, dynamic>{});
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
+      "invite_link": this.inviteLink == null ? null : this.inviteLink.toJson(),
+    };
+  }
+
+  static const CONSTRUCTOR = 'chatEventMemberJoinedByInviteLink';
 
   @override
   String getConstructor() => CONSTRUCTOR;
@@ -635,6 +680,38 @@ class ChatEventSlowModeDelayChanged extends ChatEventAction {
   String getConstructor() => CONSTRUCTOR;
 }
 
+class ChatEventMessageTtlSettingChanged extends ChatEventAction {
+  /// The message TTL setting was changed
+  ChatEventMessageTtlSettingChanged(
+      {this.oldMessageTtlSetting, this.newMessageTtlSetting});
+
+  /// [oldMessageTtlSetting] Previous value of message_ttl_setting
+  int oldMessageTtlSetting;
+
+  /// [newMessageTtlSetting] New value of message_ttl_setting
+  int newMessageTtlSetting;
+
+  /// Parse from a json
+  ChatEventMessageTtlSettingChanged.fromJson(Map<String, dynamic> json) {
+    this.oldMessageTtlSetting = json['old_message_ttl_setting'];
+    this.newMessageTtlSetting = json['new_message_ttl_setting'];
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
+      "old_message_ttl_setting": this.oldMessageTtlSetting,
+      "new_message_ttl_setting": this.newMessageTtlSetting,
+    };
+  }
+
+  static const CONSTRUCTOR = 'chatEventMessageTtlSettingChanged';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
 class ChatEventSignMessagesToggled extends ChatEventAction {
   /// The sign_messages setting of a channel was toggled
   ChatEventSignMessagesToggled({this.signMessages});
@@ -753,6 +830,95 @@ class ChatEventIsAllHistoryAvailableToggled extends ChatEventAction {
   String getConstructor() => CONSTRUCTOR;
 }
 
+class ChatEventInviteLinkEdited extends ChatEventAction {
+  /// A chat invite link was edited
+  ChatEventInviteLinkEdited({this.oldInviteLink, this.newInviteLink});
+
+  /// [oldInviteLink] Previous information about the invite link
+  ChatInviteLink oldInviteLink;
+
+  /// [newInviteLink] New information about the invite link
+  ChatInviteLink newInviteLink;
+
+  /// Parse from a json
+  ChatEventInviteLinkEdited.fromJson(Map<String, dynamic> json) {
+    this.oldInviteLink =
+        ChatInviteLink.fromJson(json['old_invite_link'] ?? <String, dynamic>{});
+    this.newInviteLink =
+        ChatInviteLink.fromJson(json['new_invite_link'] ?? <String, dynamic>{});
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
+      "old_invite_link":
+          this.oldInviteLink == null ? null : this.oldInviteLink.toJson(),
+      "new_invite_link":
+          this.newInviteLink == null ? null : this.newInviteLink.toJson(),
+    };
+  }
+
+  static const CONSTRUCTOR = 'chatEventInviteLinkEdited';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
+class ChatEventInviteLinkRevoked extends ChatEventAction {
+  /// A chat invite link was revoked
+  ChatEventInviteLinkRevoked({this.inviteLink});
+
+  /// [inviteLink] The invite link
+  ChatInviteLink inviteLink;
+
+  /// Parse from a json
+  ChatEventInviteLinkRevoked.fromJson(Map<String, dynamic> json) {
+    this.inviteLink =
+        ChatInviteLink.fromJson(json['invite_link'] ?? <String, dynamic>{});
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
+      "invite_link": this.inviteLink == null ? null : this.inviteLink.toJson(),
+    };
+  }
+
+  static const CONSTRUCTOR = 'chatEventInviteLinkRevoked';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
+class ChatEventInviteLinkDeleted extends ChatEventAction {
+  /// A revoked chat invite link was deleted
+  ChatEventInviteLinkDeleted({this.inviteLink});
+
+  /// [inviteLink] The invite link
+  ChatInviteLink inviteLink;
+
+  /// Parse from a json
+  ChatEventInviteLinkDeleted.fromJson(Map<String, dynamic> json) {
+    this.inviteLink =
+        ChatInviteLink.fromJson(json['invite_link'] ?? <String, dynamic>{});
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
+      "invite_link": this.inviteLink == null ? null : this.inviteLink.toJson(),
+    };
+  }
+
+  static const CONSTRUCTOR = 'chatEventInviteLinkDeleted';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
 class ChatEventVoiceChatCreated extends ChatEventAction {
   /// A voice chat was created
   ChatEventVoiceChatCreated({this.groupCallId});
@@ -832,6 +998,39 @@ class ChatEventVoiceChatParticipantIsMutedToggled extends ChatEventAction {
   }
 
   static const CONSTRUCTOR = 'chatEventVoiceChatParticipantIsMutedToggled';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
+class ChatEventVoiceChatParticipantVolumeLevelChanged extends ChatEventAction {
+  /// A voice chat participant volume level was changed
+  ChatEventVoiceChatParticipantVolumeLevelChanged(
+      {this.userId, this.volumeLevel});
+
+  /// [userId] Identifier of the affected user
+  int userId;
+
+  /// [volumeLevel] New value of volume_level; 1-20000 in hundreds of percents
+  int volumeLevel;
+
+  /// Parse from a json
+  ChatEventVoiceChatParticipantVolumeLevelChanged.fromJson(
+      Map<String, dynamic> json) {
+    this.userId = json['user_id'];
+    this.volumeLevel = json['volume_level'];
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
+      "user_id": this.userId,
+      "volume_level": this.volumeLevel,
+    };
+  }
+
+  static const CONSTRUCTOR = 'chatEventVoiceChatParticipantVolumeLevelChanged';
 
   @override
   String getConstructor() => CONSTRUCTOR;

@@ -13,7 +13,7 @@ class GroupCall extends TdObject {
       this.loadedAllParticipants,
       this.recentSpeakers,
       this.muteNewParticipants,
-      this.allowedChangeMuteNewParticipants,
+      this.canChangeMuteNewParticipants,
       this.duration});
 
   /// [id] Group call identifier
@@ -46,8 +46,8 @@ class GroupCall extends TdObject {
   /// [muteNewParticipants] True, if only group call administrators can unmute new participants
   bool muteNewParticipants;
 
-  /// [allowedChangeMuteNewParticipants] True, if group call administrators can enable or disable mute_new_participants setting
-  bool allowedChangeMuteNewParticipants;
+  /// [canChangeMuteNewParticipants] True, if the current user can enable or disable mute_new_participants setting
+  bool canChangeMuteNewParticipants;
 
   /// [duration] Call duration; for ended calls only
   int duration;
@@ -71,8 +71,8 @@ class GroupCall extends TdObject {
                 GroupCallRecentSpeaker.fromJson(item ?? <String, dynamic>{}))
             .toList());
     this.muteNewParticipants = json['mute_new_participants'];
-    this.allowedChangeMuteNewParticipants =
-        json['allowed_change_mute_new_participants'];
+    this.canChangeMuteNewParticipants =
+        json['can_change_mute_new_participants'];
     this.duration = json['duration'];
     this.extra = json['@extra'];
   }
@@ -91,8 +91,7 @@ class GroupCall extends TdObject {
       "loaded_all_participants": this.loadedAllParticipants,
       "recent_speakers": this.recentSpeakers.map((i) => i.toJson()).toList(),
       "mute_new_participants": this.muteNewParticipants,
-      "allowed_change_mute_new_participants":
-          this.allowedChangeMuteNewParticipants,
+      "can_change_mute_new_participants": this.canChangeMuteNewParticipants,
       "duration": this.duration,
     };
   }

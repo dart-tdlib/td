@@ -4,7 +4,7 @@ class CheckChatInviteLink extends TdFunction {
   /// Checks the validity of an invite link for a chat and returns information about the corresponding chat
   CheckChatInviteLink({this.inviteLink});
 
-  /// [inviteLink] Invite link to be checked; should begin with "https://t.me/joinchat/", "https://telegram.me/joinchat/", or "https://telegram.dog/joinchat/"
+  /// [inviteLink] Invite link to be checked; must have URL "t.me", "telegram.me", or "telegram.dog" and query beginning with "/joinchat/" or "/+"
   String inviteLink;
 
   /// callback sign

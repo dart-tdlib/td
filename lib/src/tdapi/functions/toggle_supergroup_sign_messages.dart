@@ -1,7 +1,7 @@
 part of '../tdapi.dart';
 
 class ToggleSupergroupSignMessages extends TdFunction {
-  /// Toggles sender signatures messages sent in a channel; requires can_change_info rights
+  /// Toggles sender signatures messages sent in a channel; requires can_change_info administrator right
   ToggleSupergroupSignMessages({this.supergroupId, this.signMessages});
 
   /// [supergroupId] Identifier of the channel

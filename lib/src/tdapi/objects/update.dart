@@ -33,6 +33,7 @@ class Update extends TdObject {
   /// * UpdateChatUnreadMentionCount
   /// * UpdateChatNotificationSettings
   /// * UpdateScopeNotificationSettings
+  /// * UpdateChatMessageTtlSetting
   /// * UpdateChatActionBar
   /// * UpdateChatReplyMarkup
   /// * UpdateChatDraftMessage
@@ -88,6 +89,7 @@ class Update extends TdObject {
   /// * UpdateNewCustomQuery
   /// * UpdatePoll
   /// * UpdatePollAnswer
+  /// * UpdateChatMember
   factory Update.fromJson(Map<String, dynamic> json) {
     switch (json["@type"]) {
       case UpdateAuthorizationState.CONSTRUCTOR:
@@ -146,6 +148,8 @@ class Update extends TdObject {
         return UpdateChatNotificationSettings.fromJson(json);
       case UpdateScopeNotificationSettings.CONSTRUCTOR:
         return UpdateScopeNotificationSettings.fromJson(json);
+      case UpdateChatMessageTtlSetting.CONSTRUCTOR:
+        return UpdateChatMessageTtlSetting.fromJson(json);
       case UpdateChatActionBar.CONSTRUCTOR:
         return UpdateChatActionBar.fromJson(json);
       case UpdateChatReplyMarkup.CONSTRUCTOR:
@@ -256,6 +260,8 @@ class Update extends TdObject {
         return UpdatePoll.fromJson(json);
       case UpdatePollAnswer.CONSTRUCTOR:
         return UpdatePollAnswer.fromJson(json);
+      case UpdateChatMember.CONSTRUCTOR:
+        return UpdateChatMember.fromJson(json);
       default:
         return null;
     }
@@ -1316,6 +1322,41 @@ class UpdateScopeNotificationSettings extends Update {
   }
 
   static const CONSTRUCTOR = 'updateScopeNotificationSettings';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
+class UpdateChatMessageTtlSetting extends Update {
+  /// The message Time To Live setting for a chat was changed
+  UpdateChatMessageTtlSetting({this.chatId, this.messageTtlSetting});
+
+  /// [chatId] Chat identifier
+  int chatId;
+
+  /// [messageTtlSetting] New value of message_ttl_setting
+  int messageTtlSetting;
+
+  /// callback sign
+  dynamic extra;
+
+  /// Parse from a json
+  UpdateChatMessageTtlSetting.fromJson(Map<String, dynamic> json) {
+    this.chatId = json['chat_id'];
+    this.messageTtlSetting = json['message_ttl_setting'];
+    this.extra = json['@extra'];
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
+      "chat_id": this.chatId,
+      "message_ttl_setting": this.messageTtlSetting,
+    };
+  }
+
+  static const CONSTRUCTOR = 'updateChatMessageTtlSetting';
 
   @override
   String getConstructor() => CONSTRUCTOR;
@@ -3476,6 +3517,72 @@ class UpdatePollAnswer extends Update {
   }
 
   static const CONSTRUCTOR = 'updatePollAnswer';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
+class UpdateChatMember extends Update {
+  /// User rights changed in a chat; for bots only
+  UpdateChatMember(
+      {this.chatId,
+      this.actorUserId,
+      this.date,
+      this.inviteLink,
+      this.oldChatMember,
+      this.newChatMember});
+
+  /// [chatId] Chat identifier
+  int chatId;
+
+  /// [actorUserId] Identifier of the user, changing the rights
+  int actorUserId;
+
+  /// [date] Point in time (Unix timestamp) when the user rights was changed
+  int date;
+
+  /// [inviteLink] If user has joined the chat using an invite link, the invite link; may be null
+  ChatInviteLink inviteLink;
+
+  /// [oldChatMember] Previous chat member
+  ChatMember oldChatMember;
+
+  /// [newChatMember] New chat member
+  ChatMember newChatMember;
+
+  /// callback sign
+  dynamic extra;
+
+  /// Parse from a json
+  UpdateChatMember.fromJson(Map<String, dynamic> json) {
+    this.chatId = json['chat_id'];
+    this.actorUserId = json['actor_user_id'];
+    this.date = json['date'];
+    this.inviteLink =
+        ChatInviteLink.fromJson(json['invite_link'] ?? <String, dynamic>{});
+    this.oldChatMember =
+        ChatMember.fromJson(json['old_chat_member'] ?? <String, dynamic>{});
+    this.newChatMember =
+        ChatMember.fromJson(json['new_chat_member'] ?? <String, dynamic>{});
+    this.extra = json['@extra'];
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
+      "chat_id": this.chatId,
+      "actor_user_id": this.actorUserId,
+      "date": this.date,
+      "invite_link": this.inviteLink == null ? null : this.inviteLink.toJson(),
+      "old_chat_member":
+          this.oldChatMember == null ? null : this.oldChatMember.toJson(),
+      "new_chat_member":
+          this.newChatMember == null ? null : this.newChatMember.toJson(),
+    };
+  }
+
+  static const CONSTRUCTOR = 'updateChatMember';
 
   @override
   String getConstructor() => CONSTRUCTOR;

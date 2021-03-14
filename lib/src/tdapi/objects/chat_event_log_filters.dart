@@ -13,6 +13,7 @@ class ChatEventLogFilters extends TdObject {
       this.memberRestrictions,
       this.infoChanges,
       this.settingChanges,
+      this.inviteLinkChanges,
       this.voiceChatChanges});
 
   /// [messageEdits] True, if message edits should be returned
@@ -45,6 +46,9 @@ class ChatEventLogFilters extends TdObject {
   /// [settingChanges] True, if changes in chat settings should be returned
   bool settingChanges;
 
+  /// [inviteLinkChanges] True, if changes to invite links should be returned
+  bool inviteLinkChanges;
+
   /// [voiceChatChanges] True, if voice chat actions should be returned
   bool voiceChatChanges;
 
@@ -60,6 +64,7 @@ class ChatEventLogFilters extends TdObject {
     this.memberRestrictions = json['member_restrictions'];
     this.infoChanges = json['info_changes'];
     this.settingChanges = json['setting_changes'];
+    this.inviteLinkChanges = json['invite_link_changes'];
     this.voiceChatChanges = json['voice_chat_changes'];
   }
 
@@ -77,6 +82,7 @@ class ChatEventLogFilters extends TdObject {
       "member_restrictions": this.memberRestrictions,
       "info_changes": this.infoChanges,
       "setting_changes": this.settingChanges,
+      "invite_link_changes": this.inviteLinkChanges,
       "voice_chat_changes": this.voiceChatChanges,
     };
   }

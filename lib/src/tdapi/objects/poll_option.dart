@@ -9,13 +9,13 @@ class PollOption extends TdObject {
       this.isChosen,
       this.isBeingChosen});
 
-  /// [text] Option text, 1-100 characters
+  /// [text] Option text; 1-100 characters
   String text;
 
   /// [voterCount] Number of voters for this option, available only for closed or voted polls
   int voterCount;
 
-  /// [votePercentage] The percentage of votes for this option, 0-100
+  /// [votePercentage] The percentage of votes for this option; 0-100
   int votePercentage;
 
   /// [isChosen] True, if the option was chosen by the user

@@ -11,6 +11,7 @@ class ChatReportReason extends TdObject {
   /// * ChatReportReasonChildAbuse
   /// * ChatReportReasonCopyright
   /// * ChatReportReasonUnrelatedLocation
+  /// * ChatReportReasonFake
   /// * ChatReportReasonCustom
   factory ChatReportReason.fromJson(Map<String, dynamic> json) {
     switch (json["@type"]) {
@@ -26,6 +27,8 @@ class ChatReportReason extends TdObject {
         return ChatReportReasonCopyright.fromJson(json);
       case ChatReportReasonUnrelatedLocation.CONSTRUCTOR:
         return ChatReportReasonUnrelatedLocation.fromJson(json);
+      case ChatReportReasonFake.CONSTRUCTOR:
+        return ChatReportReasonFake.fromJson(json);
       case ChatReportReasonCustom.CONSTRUCTOR:
         return ChatReportReasonCustom.fromJson(json);
       default:
@@ -164,23 +167,37 @@ class ChatReportReasonUnrelatedLocation extends ChatReportReason {
   String getConstructor() => CONSTRUCTOR;
 }
 
-class ChatReportReasonCustom extends ChatReportReason {
-  /// A custom reason provided by the user
-  ChatReportReasonCustom({this.text});
-
-  /// [text] Report text
-  String text;
+class ChatReportReasonFake extends ChatReportReason {
+  /// The chat represents a fake account
+  ChatReportReasonFake();
 
   /// Parse from a json
-  ChatReportReasonCustom.fromJson(Map<String, dynamic> json) {
-    this.text = json['text'];
-  }
+  ChatReportReasonFake.fromJson(Map<String, dynamic> json);
 
   @override
   Map<String, dynamic> toJson() {
     return {
       "@type": CONSTRUCTOR,
-      "text": this.text,
+    };
+  }
+
+  static const CONSTRUCTOR = 'chatReportReasonFake';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
+class ChatReportReasonCustom extends ChatReportReason {
+  /// A custom reason provided by the user
+  ChatReportReasonCustom();
+
+  /// Parse from a json
+  ChatReportReasonCustom.fromJson(Map<String, dynamic> json);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
     };
   }
 

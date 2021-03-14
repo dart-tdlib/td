@@ -1219,10 +1219,10 @@ class MessageScreenshotTaken extends MessageContent {
 }
 
 class MessageChatSetTtl extends MessageContent {
-  /// The TTL (Time To Live) setting messages in a secret chat has been changed
+  /// The TTL (Time To Live) setting for messages in the chat has been changed
   MessageChatSetTtl({this.ttl});
 
-  /// [ttl] New TTL
+  /// [ttl] New message TTL setting
   int ttl;
 
   /// Parse from a json

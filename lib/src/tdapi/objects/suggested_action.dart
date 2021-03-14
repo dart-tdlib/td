@@ -7,12 +7,18 @@ class SuggestedAction extends TdObject {
   /// a SuggestedAction return type can be :
   /// * SuggestedActionEnableArchiveAndMuteNewChats
   /// * SuggestedActionCheckPhoneNumber
+  /// * SuggestedActionSeeTicksHint
+  /// * SuggestedActionConvertToBroadcastGroup
   factory SuggestedAction.fromJson(Map<String, dynamic> json) {
     switch (json["@type"]) {
       case SuggestedActionEnableArchiveAndMuteNewChats.CONSTRUCTOR:
         return SuggestedActionEnableArchiveAndMuteNewChats.fromJson(json);
       case SuggestedActionCheckPhoneNumber.CONSTRUCTOR:
         return SuggestedActionCheckPhoneNumber.fromJson(json);
+      case SuggestedActionSeeTicksHint.CONSTRUCTOR:
+        return SuggestedActionSeeTicksHint.fromJson(json);
+      case SuggestedActionConvertToBroadcastGroup.CONSTRUCTOR:
+        return SuggestedActionConvertToBroadcastGroup.fromJson(json);
       default:
         return null;
     }
@@ -65,6 +71,52 @@ class SuggestedActionCheckPhoneNumber extends SuggestedAction {
   }
 
   static const CONSTRUCTOR = 'suggestedActionCheckPhoneNumber';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
+class SuggestedActionSeeTicksHint extends SuggestedAction {
+  /// Suggests the user to see a hint about meaning of one and two ticks on sent message
+  SuggestedActionSeeTicksHint();
+
+  /// Parse from a json
+  SuggestedActionSeeTicksHint.fromJson(Map<String, dynamic> json);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
+    };
+  }
+
+  static const CONSTRUCTOR = 'suggestedActionSeeTicksHint';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
+class SuggestedActionConvertToBroadcastGroup extends SuggestedAction {
+  /// Suggests the user to convert specified supergroup to a broadcast group
+  SuggestedActionConvertToBroadcastGroup({this.supergroupId});
+
+  /// [supergroupId] Supergroup identifier
+  int supergroupId;
+
+  /// Parse from a json
+  SuggestedActionConvertToBroadcastGroup.fromJson(Map<String, dynamic> json) {
+    this.supergroupId = json['supergroup_id'];
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
+      "supergroup_id": this.supergroupId,
+    };
+  }
+
+  static const CONSTRUCTOR = 'suggestedActionConvertToBroadcastGroup';
 
   @override
   String getConstructor() => CONSTRUCTOR;

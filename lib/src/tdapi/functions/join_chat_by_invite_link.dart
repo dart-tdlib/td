@@ -1,10 +1,10 @@
 part of '../tdapi.dart';
 
 class JoinChatByInviteLink extends TdFunction {
-  /// Uses an invite link to add the current user to the chat if possible. The new member will not be added until the chat state has been synchronized with the server
+  /// Uses an invite link to add the current user to the chat if possible
   JoinChatByInviteLink({this.inviteLink});
 
-  /// [inviteLink] Invite link to import; should begin with "https://t.me/joinchat/", "https://telegram.me/joinchat/", or "https://telegram.dog/joinchat/"
+  /// [inviteLink] Invite link to import; must have URL "t.me", "telegram.me", or "telegram.dog" and query beginning with "/joinchat/" or "/+"
   String inviteLink;
 
   /// callback sign

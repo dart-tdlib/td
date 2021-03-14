@@ -822,7 +822,7 @@ class InputMessagePoll extends InputMessageContent {
       this.closeDate,
       this.isClosed});
 
-  /// [question] Poll question, 1-255 characters (up to 300 characters for bots)
+  /// [question] Poll question; 1-255 characters (up to 300 characters for bots)
   String question;
 
   /// [options] List of poll answer options, 2-10 strings 1-100 characters each

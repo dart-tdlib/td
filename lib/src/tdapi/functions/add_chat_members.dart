@@ -1,7 +1,7 @@
 part of '../tdapi.dart';
 
 class AddChatMembers extends TdFunction {
-  /// Adds multiple new members to a chat. Currently this method is only available for supergroups and channels. This method can't be used to join a chat. Members can't be added to a channel if it has more than 200 members. Members will not be added until the chat state has been synchronized with the server
+  /// Adds multiple new members to a chat. Currently this method is only available for supergroups and channels. This method can't be used to join a chat. Members can't be added to a channel if it has more than 200 members
   AddChatMembers({this.chatId, this.userIds});
 
   /// [chatId] Chat identifier

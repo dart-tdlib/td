@@ -7,18 +7,18 @@ class InputCredentials extends TdObject {
   /// a InputCredentials return type can be :
   /// * InputCredentialsSaved
   /// * InputCredentialsNew
-  /// * InputCredentialsAndroidPay
   /// * InputCredentialsApplePay
+  /// * InputCredentialsGooglePay
   factory InputCredentials.fromJson(Map<String, dynamic> json) {
     switch (json["@type"]) {
       case InputCredentialsSaved.CONSTRUCTOR:
         return InputCredentialsSaved.fromJson(json);
       case InputCredentialsNew.CONSTRUCTOR:
         return InputCredentialsNew.fromJson(json);
-      case InputCredentialsAndroidPay.CONSTRUCTOR:
-        return InputCredentialsAndroidPay.fromJson(json);
       case InputCredentialsApplePay.CONSTRUCTOR:
         return InputCredentialsApplePay.fromJson(json);
+      case InputCredentialsGooglePay.CONSTRUCTOR:
+        return InputCredentialsGooglePay.fromJson(json);
       default:
         return null;
     }
@@ -92,32 +92,6 @@ class InputCredentialsNew extends InputCredentials {
   String getConstructor() => CONSTRUCTOR;
 }
 
-class InputCredentialsAndroidPay extends InputCredentials {
-  /// Applies if a user enters new credentials using Android Pay
-  InputCredentialsAndroidPay({this.data});
-
-  /// [data] JSON-encoded data with the credential identifier
-  String data;
-
-  /// Parse from a json
-  InputCredentialsAndroidPay.fromJson(Map<String, dynamic> json) {
-    this.data = json['data'];
-  }
-
-  @override
-  Map<String, dynamic> toJson() {
-    return {
-      "@type": CONSTRUCTOR,
-      "data": this.data,
-    };
-  }
-
-  static const CONSTRUCTOR = 'inputCredentialsAndroidPay';
-
-  @override
-  String getConstructor() => CONSTRUCTOR;
-}
-
 class InputCredentialsApplePay extends InputCredentials {
   /// Applies if a user enters new credentials using Apple Pay
   InputCredentialsApplePay({this.data});
@@ -139,6 +113,32 @@ class InputCredentialsApplePay extends InputCredentials {
   }
 
   static const CONSTRUCTOR = 'inputCredentialsApplePay';
+
+  @override
+  String getConstructor() => CONSTRUCTOR;
+}
+
+class InputCredentialsGooglePay extends InputCredentials {
+  /// Applies if a user enters new credentials using Google Pay
+  InputCredentialsGooglePay({this.data});
+
+  /// [data] JSON-encoded data with the credential identifier
+  String data;
+
+  /// Parse from a json
+  InputCredentialsGooglePay.fromJson(Map<String, dynamic> json) {
+    this.data = json['data'];
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "@type": CONSTRUCTOR,
+      "data": this.data,
+    };
+  }
+
+  static const CONSTRUCTOR = 'inputCredentialsGooglePay';
 
   @override
   String getConstructor() => CONSTRUCTOR;

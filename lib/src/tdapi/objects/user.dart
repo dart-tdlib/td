@@ -16,6 +16,7 @@ class User extends TdObject {
       this.isSupport,
       this.restrictionReason,
       this.isScam,
+      this.isFake,
       this.haveAccess,
       this.type,
       this.languageCode});
@@ -59,6 +60,9 @@ class User extends TdObject {
   /// [isScam] True, if many users reported this user as a scam
   bool isScam;
 
+  /// [isFake] True, if many users reported this user as a fake account
+  bool isFake;
+
   /// [haveAccess] If false, the user is inaccessible, and the only information known about the user is inside this class. It can't be passed to any method except GetUser
   bool haveAccess;
 
@@ -87,6 +91,7 @@ class User extends TdObject {
     this.isSupport = json['is_support'];
     this.restrictionReason = json['restriction_reason'];
     this.isScam = json['is_scam'];
+    this.isFake = json['is_fake'];
     this.haveAccess = json['have_access'];
     this.type = UserType.fromJson(json['type'] ?? <String, dynamic>{});
     this.languageCode = json['language_code'];
@@ -111,6 +116,7 @@ class User extends TdObject {
       "is_support": this.isSupport,
       "restriction_reason": this.restrictionReason,
       "is_scam": this.isScam,
+      "is_fake": this.isFake,
       "have_access": this.haveAccess,
       "type": this.type == null ? null : this.type.toJson(),
       "language_code": this.languageCode,

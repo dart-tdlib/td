@@ -36,7 +36,7 @@ class InputChatPhotoPrevious extends InputChatPhoto {
   /// A previously used profile photo of the current user
   InputChatPhotoPrevious({this.chatPhotoId});
 
-  /// [chatPhotoId] Identifier of the profile photo to reuse
+  /// [chatPhotoId] Identifier of the current user's profile photo to reuse
   int chatPhotoId;
 
   /// Parse from a json
